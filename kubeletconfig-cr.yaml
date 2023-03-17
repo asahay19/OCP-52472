@@ -1,0 +1,16 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  name: runtime-timeout-template
+  name: "${NAME}"
+spec:
+  machineConfigPoolSelector:
+    matchLabels:
+        "${LABELKEY}": "${LABELVALUE}"
+      #aro.openshift.io/limits: ""
+  kubeletConfig:
+    runtimeRequestTimeout: 3m
+parameters:
+- name: NAME
+- name: LABELKEY
+- name: LABELVALUE
