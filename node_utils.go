@@ -589,7 +589,7 @@ func getPodNetNs(oc *exutil.CLI, hostname string) (string, error) {
 }
 
 func addLabelToNode(oc *exutil.CLI, label string, workerNodeName string, resource string) {
-	_, err := oc.AsAdmin().WithoutNamespace().Run("label").Args(resource, workerNodeName, label).Output()
+	_, err := oc.AsAdmin().WithoutNamespace().Run("label").Args(resource, workerNodeName, label, "--overwrite").Output()
 	o.Expect(err).NotTo(o.HaveOccurred())
 	e2e.Logf("\nLabel Added")
 }
@@ -1041,8 +1041,9 @@ func runTimeTimeout(oc *exutil.CLI)  {
                         e2e.Logf("\nNode %s Status is %s\n", node, nodeStatus)
 
                         if nodeStatus == "True" {
-                                kubeconfig, err = exutil.DebugNodeWithChroot(oc, node, "/bin/bash", "-c", "systemctl show kubelet.config | grep runtimeRequestTimeout")
+                                kubeconfig, err = exutil.DebugNodeWithChroot(oc, node, "/bin/bash", "-c", "systemctl show /etc/kubernetes/kubelet.conf | grep runtimeRequestTimeout")
                                 o.Expect(err).NotTo(o.HaveOccurred())
+				e2e.Logf("\n Kubeconfig file is %v", kubeconfig)
 		
 
                                 if strings.Contains(string(kubeconfig), "runtimeRequestTimeout: 3m") {

@@ -672,7 +672,7 @@ var _ = g.Describe("[sig-node] NODE initContainer policy,volume,readines,quota",
 
                 g.By("Label mcp worker custom-kubelet as test-timeout \n")
                 addLabelToNode(oc, "custom-kubelet=test-timeout", "worker", "mcp")
-                defer removeLabelFromNode(oc, "custom-kubelet", "worker", "mcp")
+                defer removeLabelFromNode(oc, "custom-kubelet-", "worker", "mcp")
 
                 g.By("Create Kubelet config \n")
                 runtimeTimeout.create(oc)
